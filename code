@@ -1,0 +1,87 @@
+int h = 12;
+int m = 0;
+int s = 0;
+int flag = 0;
+int TIME = 0;
+const int hs = 0;
+const int ms = 1;
+int state1 = 0;
+int state2 = 0;
+const int LEDpin = 10;
+const long onDuration = 2000; 
+int LEDState = HIGH;
+long rememberTime = 0;
+ 
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(hs, INPUT_PULLUP);
+  pinMode(ms, INPUT_PULLUP);
+  pinMode(LEDpin,OUTPUT);
+  digitalWrite(LEDpin,LEDState);
+}
+void loop()
+{
+ if(h==12&m==0&s==10 )
+ 
+  {
+   digitalWrite(10,HIGH);
+   delay(60000);
+   s = s+1;
+   m=m+1;
+  }
+  
+  
+ else
+ {
+    digitalWrite(10, LOW);
+ }
+  
+  s = s + 1;
+  
+  Serial.print(h);
+  Serial.print(":");
+  Serial.print(m);
+  Serial.print(":");
+  Serial.println(s);
+  if (flag < 12) Serial.println(" AM");
+  if (flag == 12) Serial.println(" PM");
+  if (flag > 12) Serial.println(" PM");
+  if (flag == 24) flag = 0;
+  delay(1000);
+ 
+  if (s == 60)
+  {
+    s = 0;
+    m = m + 1;
+  }
+  if (m == 60)
+  {
+    m = 0;
+    h = h + 1;
+    flag = flag + 1;
+  }
+  if (h == 13)
+  {
+    h = 1;
+  }
+  
+  
+  state1 = digitalRead(hs);
+  if (state1 == 0)
+  {
+    h = h + 1;
+    flag = flag + 1;
+    if (flag < 12) Serial.println(" AM");
+    if (flag == 12) Serial.println(" PM");
+    if (flag > 12) Serial.println(" PM");
+    if (flag == 24) flag = 0;
+    if (h == 13) h = 1;
+  }
+  state2 = digitalRead(ms);
+  if (state2 == 0)
+  {
+    s = 0;
+    m = m + 1;
+  }
+}
